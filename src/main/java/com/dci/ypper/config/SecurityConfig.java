@@ -3,6 +3,7 @@ package com.dci.ypper.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -25,29 +26,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(customizer -> customizer.disable()); // disables crsf
-        httpSecurity.authorizeHttpRequests(request -> request.anyRequest().authenticated());
-        httpSecurity.formLogin(Customizer.withDefaults()); // adds form login
+        httpSecurity.csrf(csrf -> csrf.disable()); // disables crsf
+        //httpSecurity.authorizeHttpRequests(request -> request.anyRequest().authenticated());
+        //httpSecurity.formLogin(Customizer.withDefaults()); // adds form login
         httpSecurity.httpBasic(Customizer.withDefaults()); // adds basic http login
+        httpSecurity.authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.POST, "/register")
+                .permitAll()
+                .anyRequest()
+                .authenticated());
         httpSecurity.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 
         return httpSecurity.build();
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//       UserDetails user1 = User
-//               .withDefaultPasswordEncoder()
-//               .username("kai")
-//               .password("yolo")
-//               .roles("USER")
-//               .build();
-//
-//
-//       return new InMemoryUserDetailsManager();
-//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
