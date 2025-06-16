@@ -1,6 +1,6 @@
 package com.dci.ypper.repository;
 
-import com.dci.ypper.models.Post;
+import com.dci.ypper.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

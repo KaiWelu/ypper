@@ -1,5 +1,4 @@
-package com.dci.ypper.models;
-
+package com.dci.ypper.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,17 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tags")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 
-public class Tag {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tag_id")
+    @Column(name = "user_id")
     private Long id;
 
     private String name;
+    private String password;
+    private String email;
 }

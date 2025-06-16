@@ -1,4 +1,4 @@
-package com.dci.ypper.models;
+package com.dci.ypper.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
