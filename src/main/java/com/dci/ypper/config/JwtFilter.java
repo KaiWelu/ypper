@@ -12,10 +12,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JWTService jwtService;
@@ -33,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
             // this will cut the bearer string in front
             token = authHeader.substring(7);
-            username = jwtService.extractUsername(token);
+            username = jwtService.extractUserName(token);
         }
 
         // this checks if the username exists and isn't authenticated
