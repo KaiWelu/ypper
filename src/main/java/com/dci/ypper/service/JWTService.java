@@ -3,6 +3,7 @@ package com.dci.ypper.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.KeyGenerator;
@@ -32,8 +33,6 @@ public class JWTService {
     }
 
     public String generateToken(String username) {
-
-
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder().claims().add(claims)
@@ -41,13 +40,19 @@ public class JWTService {
                    .issuedAt(new Date(System.currentTimeMillis()))
                    .expiration(new Date(System.currentTimeMillis() + 60 *60 * 60 * 30)) // sets expiration date
                    .and().signWith(getKey()).compact();
-
-
     }
 
     private Key getKey() {
         byte[] keyBites = Decoders.BASE64.decode(secretKey);
 
         return Keys.hmacShaKeyFor(keyBites);
+    }
+
+    public String extractUsername(String token) {
+        return null;
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        return null;
     }
 }

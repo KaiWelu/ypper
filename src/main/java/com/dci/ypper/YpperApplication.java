@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class YpperApplication implements CommandLineRunner {
-	private static final Logger logger = LoggerFactory.getLogger(SpringBookApplication.class);
+	private static final Logger logger = LoggerFactory.getLogger(YpperApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(YpperApplication.class, args);
