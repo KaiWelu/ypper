@@ -32,7 +32,19 @@ public class PostService {
     private TagRepository tagRepository;
 
 
-    public List<Post> getAllPosts() {return postRepository.findAll();}
+    public List<PostRequest> getAllPosts() {
+        return postRepository.findAll().stream()
+                .map((post) -> {
+                    String[] emptyList = new String[0]; // this is temporary until tags are implemented
+                    return PostRequest.builder()
+                                      .title(post.getTitle())
+                                      .content(post.getContent())
+                                      .userName(post.getUser().getName())
+                                      .tags(emptyList)
+                                      .build();
+                }).toList();
+
+    }
 
     public Optional<Post> getPostById(Long id) {return postRepository.findById(id);}
 
