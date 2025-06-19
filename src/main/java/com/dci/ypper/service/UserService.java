@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+
 @Service
 public class UserService {
     @Autowired
@@ -20,7 +22,10 @@ public class UserService {
     @Autowired
     AuthenticationManager authenticationManager;
 
+
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public User getUserByName(String name) {return repository.findByName(name).orElseThrow();}
 
     public User register(User user) {
         user.setPassword(encoder.encode(user.getPassword())); // this will encrypt the password
@@ -35,4 +40,5 @@ public class UserService {
         }
         return "Fail!";
     }
+
 }

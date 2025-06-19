@@ -11,6 +11,5 @@ public class PostRequest {
     private String title;
     private String content;
     private String userName;
-    private Long userId;
     private String[] tags;
 }
