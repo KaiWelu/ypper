@@ -3,7 +3,6 @@ package com.dci.ypper.service;
 import com.dci.ypper.dto.PostRequest;
 import com.dci.ypper.dto.PostResponse;
 import com.dci.ypper.model.Post;
-import com.dci.ypper.model.Tag;
 import com.dci.ypper.repository.CommentRepository;
 import com.dci.ypper.repository.PostRepository;
 import com.dci.ypper.repository.TagRepository;
@@ -13,10 +12,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -38,7 +36,7 @@ public class PostService {
                 .map((post) -> {
                     String[] emptyList = new String[0]; // this is temporary until tags are implemented
                     return PostResponse.builder()
-                                       .postId(post.getId())
+                                       .id(post.getId())
                                        .createdAt(post.getCreatedAt())
                                        .updatedAt(post.getUpdatedAt())
                                        .title(post.getTitle())
@@ -54,7 +52,7 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException(String.valueOf(id)));
         String[] emptyList = new String[0]; // this is temporary until tags are implemented
         return PostResponse.builder()
-                           .postId(post.getId())
+                           .id(post.getId())
                            .createdAt(post.getCreatedAt())
                            .updatedAt(post.getUpdatedAt())
                            .title(post.getTitle())
@@ -75,6 +73,29 @@ public class PostService {
                            .build();
 
         return postRepository.save(newPost);
+    }
+
+    @Transactional
+    public PostResponse updatePost(Long id, PostRequest update) {
+        // look up if the post exists
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found!"));
+
+        // update the post - tags are missing for now
+        post.setTitle(update.getContent());
+        post.setContent(update.getContent());
+
+        // save the post
+        postRepository.save(post);
+        String[] emptyList = new String[0]; // this is temporary until tags are implemented
+        return PostResponse.builder()
+                           .id(post.getId())
+                           .createdAt(post.getCreatedAt())
+                           .updatedAt(post.getUpdatedAt())
+                           .title(post.getTitle())
+                           .content(post.getContent())
+                           .userName(post.getUser().getName())
+                           .tags(emptyList)
+                           .build();
     }
 
     public void deletePost(Long id) {postRepository.deleteById(id);}

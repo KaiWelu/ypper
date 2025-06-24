@@ -25,7 +25,6 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000/")
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
-        System.out.println(user);
         String token = userService.verify(user);
         Map<String, String> response = Map.of("token", token);
         return ResponseEntity.ok(response);

@@ -27,6 +27,12 @@ public class PostController {
     @PostMapping("/posts")
     public Post createPost(@RequestBody PostRequest postRequest) {return postService.createPost(postRequest);}
 
+    @PutMapping("posts/{id}")
+    public  ResponseEntity<PostResponse> updateBook(@PathVariable Long id, @RequestBody PostRequest request) {
+        PostResponse updatedPost = postService.updatePost(id, request);
+        return ResponseEntity.ok(updatedPost);
+    }
+
     @DeleteMapping("posts/{id}")
     public ResponseEntity<Post> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
