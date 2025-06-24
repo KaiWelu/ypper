@@ -1,6 +1,7 @@
 package com.dci.ypper.service;
 
 import com.dci.ypper.dto.PostRequest;
+import com.dci.ypper.dto.PostResponse;
 import com.dci.ypper.model.Post;
 import com.dci.ypper.model.Tag;
 import com.dci.ypper.repository.CommentRepository;
@@ -32,16 +33,19 @@ public class PostService {
     private TagRepository tagRepository;
 
 
-    public List<PostRequest> getAllPosts() {
+    public List<PostResponse> getAllPosts() {
         return postRepository.findAll().stream()
                 .map((post) -> {
                     String[] emptyList = new String[0]; // this is temporary until tags are implemented
-                    return PostRequest.builder()
-                                      .title(post.getTitle())
-                                      .content(post.getContent())
-                                      .userName(post.getUser().getName())
-                                      .tags(emptyList)
-                                      .build();
+                    return PostResponse.builder()
+                                       .postId(post.getId())
+                                       .createdAt(post.getCreatedAt())
+                                       .updatedAt(post.getUpdatedAt())
+                                       .title(post.getTitle())
+                                       .content(post.getContent())
+                                       .userName(post.getUser().getName())
+                                       .tags(emptyList)
+                                       .build();
                 }).toList();
 
     }

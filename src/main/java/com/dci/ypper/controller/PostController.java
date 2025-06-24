@@ -1,6 +1,7 @@
 package com.dci.ypper.controller;
 
 import com.dci.ypper.dto.PostRequest;
+import com.dci.ypper.dto.PostResponse;
 import com.dci.ypper.model.Post;
 import com.dci.ypper.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/posts")
-    public List<PostRequest> getAllPosts() {return postService.getAllPosts();}
+    public List<PostResponse> getAllPosts() {return postService.getAllPosts();}
 
     @PostMapping("/posts")
     public Post createPost(@RequestBody PostRequest postRequest) {return postService.createPost(postRequest);}
