@@ -50,7 +50,19 @@ public class PostService {
 
     }
 
-    public Optional<Post> getPostById(Long id) {return postRepository.findById(id);}
+    public PostResponse getPostById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException(String.valueOf(id)));
+        String[] emptyList = new String[0]; // this is temporary until tags are implemented
+        return PostResponse.builder()
+                           .postId(post.getId())
+                           .createdAt(post.getCreatedAt())
+                           .updatedAt(post.getUpdatedAt())
+                           .title(post.getTitle())
+                           .content(post.getContent())
+                           .userName(post.getUser().getName())
+                           .tags(emptyList)
+                           .build();
+    }
 
     @Transactional
     public Post createPost(PostRequest request) {
@@ -65,5 +77,6 @@ public class PostService {
         return postRepository.save(newPost);
     }
 
+    public void deletePost(Long id) {postRepository.deleteById(id);}
 
 }
