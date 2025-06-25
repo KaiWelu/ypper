@@ -12,11 +12,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
 import java.util.Collections;
-import java.util.List;
+
 
 @Service
 public class PostService {
@@ -101,6 +102,15 @@ public class PostService {
                            .build();
     }
 
-    public void deletePost(Long id) {postRepository.deleteById(id);}
+    public void deletePost(Long id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Post not found!"));
+
+        if(!post.getUser().getName().equals(username)) {
+            throw new SecurityException("You are not authorized to delete this post. You are not the owner!");
+        }
+
+        postRepository.deleteById(id);}
 
 }
