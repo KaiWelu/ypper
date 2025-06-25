@@ -10,6 +10,8 @@ import com.dci.ypper.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -31,11 +33,11 @@ public class PostService {
     private TagRepository tagRepository;
 
 
-    public List<PostResponse> getAllPosts() {
-        return postRepository.findAll().stream()
-                .map((post) -> {
-                    String[] emptyList = new String[0]; // this is temporary until tags are implemented
-                    return PostResponse.builder()
+    public Page<PostResponse> getAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                             .map((post) -> {
+                                        String[] emptyList = new String[0]; // this is temporary until tags are implemented
+                                        return PostResponse.builder()
                                        .id(post.getId())
                                        .createdAt(post.getCreatedAt())
                                        .updatedAt(post.getUpdatedAt())
@@ -44,7 +46,8 @@ public class PostService {
                                        .userName(post.getUser().getName())
                                        .tags(emptyList)
                                        .build();
-                }).toList();
+                });
+
 
     }
 
