@@ -1,14 +1,18 @@
 package com.dci.ypper.controller;
 
+import com.dci.ypper.dto.PaginatedResponse;
 import com.dci.ypper.dto.PostRequest;
 import com.dci.ypper.dto.PostResponse;
 import com.dci.ypper.model.Post;
 import com.dci.ypper.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PostController {
@@ -16,7 +20,25 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/posts")
-    public List<PostResponse> getAllPosts() {return postService.getAllPosts();}
+    public ResponseEntity<PaginatedResponse<PostResponse>> getAllPosts(Pageable pageable) {
+        Page<PostResponse> page = postService.getAllPosts(pageable);
+        // this will extract the sorting order from the request
+        String sort = pageable.getSort().stream()
+                              .map(order -> order.getProperty() + "," + order.getDirection().name().toLowerCase())
+                              .collect(Collectors.joining("; ")); // e.g., "createdAt,desc; title,asc"
+
+        PaginatedResponse<PostResponse> response = new PaginatedResponse<PostResponse>(
+                page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast(),
+                page.isFirst(),
+                sort
+        );
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
