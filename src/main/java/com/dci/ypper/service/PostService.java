@@ -81,8 +81,16 @@ public class PostService {
 
     @Transactional
     public PostResponse updatePost(Long id, PostRequest update) {
+        // gets the username from the securtiy context
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         // look up if the post exists
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found!"));
+
+        if(!post.getUser().getName().equals(username)) {
+            throw new SecurityException("You are not authorized to update this post. You are not the owner!");
+        }
+
 
         // update the post - tags are missing for now
         post.setTitle(update.getContent());
