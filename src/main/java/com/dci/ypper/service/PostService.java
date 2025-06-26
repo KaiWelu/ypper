@@ -93,7 +93,7 @@ public class PostService {
 
 
         // update the post - tags are missing for now
-        post.setTitle(update.getContent());
+        post.setTitle(update.getTitle());
         post.setContent(update.getContent());
 
         // save the post

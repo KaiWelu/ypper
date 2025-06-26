@@ -1,5 +1,6 @@
 package com.dci.ypper.service;
 
+import com.dci.ypper.dto.UserRegisterRequest;
 import com.dci.ypper.model.User;
 import com.dci.ypper.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,13 @@ public class UserService {
 
     public User getUserByName(String name) {return repository.findByName(name).orElseThrow();}
 
-    public User register(User user) {
+    public User register(UserRegisterRequest userRequest) {
+        User user = User.builder().name(userRequest.getName())
+                .email(userRequest.getEmail())
+                .password(userRequest.getPassword()).build();
+
         user.setPassword(encoder.encode(user.getPassword())); // this will encrypt the password
+
         return repository.save(user);
     }
 
