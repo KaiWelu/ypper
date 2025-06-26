@@ -52,7 +52,7 @@ public class PostController {
     public Post createPost(@Valid @RequestBody PostRequest postRequest) {return postService.createPost(postRequest);}
 
     @PutMapping("posts/{id}")
-    public  ResponseEntity<PostResponse> updateBook(@PathVariable Long id, @RequestBody PostRequest request) {
+    public  ResponseEntity<PostResponse> updateBook(@PathVariable Long id, @Valid @RequestBody PostRequest request) {
         PostResponse updatedPost = postService.updatePost(id, request);
         return ResponseEntity.ok(updatedPost);
     }
