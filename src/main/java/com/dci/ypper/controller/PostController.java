@@ -5,6 +5,7 @@ import com.dci.ypper.dto.PostRequest;
 import com.dci.ypper.dto.PostResponse;
 import com.dci.ypper.model.Post;
 import com.dci.ypper.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,8 +47,9 @@ public class PostController {
         return  ResponseEntity.ok(post);
     }
 
+    // this should be changed to a response entity
     @PostMapping("/posts")
-    public Post createPost(@RequestBody PostRequest postRequest) {return postService.createPost(postRequest);}
+    public Post createPost(@Valid @RequestBody PostRequest postRequest) {return postService.createPost(postRequest);}
 
     @PutMapping("posts/{id}")
     public  ResponseEntity<PostResponse> updateBook(@PathVariable Long id, @RequestBody PostRequest request) {
