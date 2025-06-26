@@ -1,7 +1,9 @@
 package com.dci.ypper.controller;
 
+import com.dci.ypper.dto.UserRegisterRequest;
 import com.dci.ypper.model.User;
 import com.dci.ypper.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,11 +20,14 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.register(user);
+    public ResponseEntity<Map<String, String>> register(@Valid @RequestBody UserRegisterRequest user) {
+        userService.register(user);
+        Map<String, String> response = Map.of("name", user.getName(),
+                                              "email", user.getEmail());
+        return ResponseEntity.ok(response);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000/")
+//    @CrossOrigin(origins = "http://localhost:3000/")
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
         String token = userService.verify(user);
