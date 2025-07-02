@@ -62,4 +62,10 @@ public class PostController {
         postService.deletePost(id);
         return ResponseEntity.noContent().build(); // it is standard practice to send an empty response
     }
+
+    @GetMapping("posts/yolo")
+    public ResponseEntity<String> yolo(@RequestBody String request) {
+        System.out.println(request);
+        return  ResponseEntity.notFound().build();
+    }
 }
